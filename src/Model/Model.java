@@ -1,5 +1,6 @@
 package Model;
 
+import Helpers.StockStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntConsumer;
@@ -29,10 +30,6 @@ public class Model {
             boolean variableConsumptionType,
             int fixedConsumptionType
     ) {
-        public enum StockStrategy {
-            SLEEP,
-            WAIT_NOTIFY_ALL
-        }
 
         public SimulationConfig {
             if (producerCount < 0 || consumerCount < 0) {

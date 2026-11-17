@@ -1,7 +1,8 @@
 package View;
 
-import Model.Recurs;
+import Helpers.StockStrategy;
 import Model.Model;
+import Model.Recurs;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -50,8 +51,8 @@ public class ControlPanel extends JPanel {
     private final JCheckBox synchronization =
             new JCheckBox("Sincronització per produir/consumir: SI", true);
     private final JComboBox<StockStrategyOption> stockStrategy = new JComboBox<>(new StockStrategyOption[]{
-            new StockStrategyOption("sleep (consultar periódicamente)", Model.SimulationConfig.StockStrategy.SLEEP),
-            new StockStrategyOption("wait / notifyAll", Model.SimulationConfig.StockStrategy.WAIT_NOTIFY_ALL)
+            new StockStrategyOption("sleep (consultar periódicamente)", StockStrategy.SLEEP),
+            new StockStrategyOption("wait / notifyAll", StockStrategy.WAIT_NOTIFY_ALL)
     });
     private final JLabel strategyHint = new JLabel(" ");
     private final JButton playButton = new JButton("Iniciar simulación");
@@ -401,7 +402,7 @@ public class ControlPanel extends JPanel {
         }
     }
 
-    private record StockStrategyOption(String label, Model.SimulationConfig.StockStrategy strategy) {
+    private record StockStrategyOption(String label, StockStrategy strategy) {
         @Override
         public String toString() {
             return label;

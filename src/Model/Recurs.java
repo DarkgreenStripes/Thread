@@ -1,6 +1,7 @@
 package Model;
 
 import Helpers.CriticalSection;
+import Helpers.StockStrategy;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -20,7 +21,7 @@ public class Recurs {
     private int maximumStock = DEFAULT_MAXIMUM;
     private boolean stockControlEnabled = true;
     private boolean synchronizationEnabled = true;
-    private Model.SimulationConfig.StockStrategy stockStrategy = Model.SimulationConfig.StockStrategy.WAIT_NOTIFY_ALL;
+    private StockStrategy stockStrategy = StockStrategy.WAIT_NOTIFY_ALL;
     private volatile Runnable onCountChanged = () -> {};
 
     //Cosas del semáforo
@@ -67,7 +68,7 @@ public class Recurs {
             throw new IllegalArgumentException("El tipo de recurso seleccionado no existe.");
         }
         boolean useWaitNotify = synchronizationEnabled
-                && stockStrategy == Model.SimulationConfig.StockStrategy.WAIT_NOTIFY_ALL;
+                && stockStrategy == StockStrategy.WAIT_NOTIFY_ALL;
         while (true) {
             synchronized (this) {
                 if (!stockControlEnabled || !isBlocked(producing, resourceType)) {
