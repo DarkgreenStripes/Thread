@@ -18,7 +18,12 @@ public class Productor implements Runnable {
     public Productor(Recurs recurs) {
         this.recurs = recurs;
     }
+    
+    private int randomBetween(int minimum, int maximum) {
+        return (int) ThreadLocalRandom.current().nextLong((long) minimum, (long) maximum + 1);
+    }
 
+    //Setters
     public void setProductionAmount(boolean unlimited, int minimumAmount, int maximumAmount) {
         this.unlimited = unlimited;
         this.minimumAmount = minimumAmount;
@@ -63,9 +68,5 @@ public class Productor implements Runnable {
                 return;
             }
         }
-    }
-
-    private int randomBetween(int minimum, int maximum) {
-        return (int) ThreadLocalRandom.current().nextLong((long) minimum, (long) maximum + 1);
     }
 }

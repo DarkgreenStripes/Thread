@@ -1,7 +1,7 @@
 package Model;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 
 public class Consumidor implements Runnable {
@@ -19,6 +19,11 @@ public class Consumidor implements Runnable {
         this.recurs = recurs;
     }
 
+    private int randomBetween(int minimum, int maximum) {
+        return (int) ThreadLocalRandom.current().nextLong((long) minimum, (long) maximum + 1);
+    }
+
+    // Setters
     public void setConsumptionAmount(boolean unlimited, int minimumAmount, int maximumAmount) {
         this.unlimited = unlimited;
         this.minimumAmount = minimumAmount;
@@ -63,9 +68,5 @@ public class Consumidor implements Runnable {
                 return;
             }
         }
-    }
-
-    private int randomBetween(int minimum, int maximum) {
-        return (int) ThreadLocalRandom.current().nextLong((long) minimum, (long) maximum + 1);
     }
 }
