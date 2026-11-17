@@ -6,7 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import Model.Model;
-import Model.Recurs;
+import Helpers.CriticalSection;
 import javax.swing.*;
 
 public class View {
@@ -106,7 +106,7 @@ public class View {
         dataPanel.setStockByResourceType(stockByType);
     }
 
-    public void setCriticalSectionStatus(Recurs.CriticalSection status) {
+    public void setCriticalSectionStatus(CriticalSection status) {
         viewPanel.setCriticalSectionStatus(status);
     }
 

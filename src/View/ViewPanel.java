@@ -1,17 +1,17 @@
 package View;
 
+import Helpers.CriticalSection;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import Model.Recurs;
 
 public class ViewPanel extends JPanel {
     private final JLabel counterLabel;
@@ -100,22 +100,25 @@ public class ViewPanel extends JPanel {
         sleepTimeConsumed.setText("Último intervalo de consumo: " + milliseconds + " ms");
     }
 
-    public void setCriticalSectionStatus(Recurs.CriticalSection status) {
-        freeLight.setActive(status == Recurs.CriticalSection.IDLE);
-        producerLight.setActive(status == Recurs.CriticalSection.PRODUCING);
-        consumerLight.setActive(status == Recurs.CriticalSection.CONSUMING);
+    public void setCriticalSectionStatus(CriticalSection status) {
+        freeLight.setActive(status == CriticalSection.IDLE);
+        producerLight.setActive(status == CriticalSection.PRODUCING);
+        consumerLight.setActive(status == CriticalSection.CONSUMING);
         switch (status) {
             case IDLE -> {
                 semaphoreStatus.setText("Recurso libre");
                 semaphoreStatus.setForeground(View.SUCCESS);
+                System.out.println(status.toString());
             }
             case PRODUCING -> {
                 semaphoreStatus.setText("Chef dentro de la región crítica");
                 semaphoreStatus.setForeground(View.PRIMARY);
+                System.out.println(status.toString());
             }
             case CONSUMING -> {
                 semaphoreStatus.setText("Cliente dentro de la región crítica");
                 semaphoreStatus.setForeground(new Color(217, 119, 6));
+                System.out.println(status.toString());
             }
         }
     }

@@ -1,23 +1,19 @@
 package Model;
 
-import java.util.concurrent.TimeUnit;
+import Helpers.CriticalSection;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicLongArray;
 import java.util.function.Consumer;
-
 public class Recurs {
+    //Variables para View
     public static final int MAX_CAPACITY = 100;
     public static final int DEFAULT_MINIMUM = 1;
     public static final int DEFAULT_MAXIMUM = 50;
-    private static final long STOCK_POLL_INTERVAL_MILLIS = 25;
+    private static final long STOCK_POLL_INTERVAL_MILLIS = 25; //usado en changeStock como tiempo ms.
 
-    public enum CriticalSection {
-        IDLE,
-        PRODUCING,
-        CONSUMING
-    }
-
+    //Cosas de stock
     private AtomicLongArray stock = new AtomicLongArray(1);
     private final AtomicLong totalProduced = new AtomicLong();
     private final AtomicLong totalConsumed = new AtomicLong();
@@ -26,17 +22,12 @@ public class Recurs {
     private boolean synchronizationEnabled = true;
     private Model.SimulationConfig.StockStrategy stockStrategy = Model.SimulationConfig.StockStrategy.WAIT_NOTIFY_ALL;
     private volatile Runnable onCountChanged = () -> {};
+
+    //Cosas del semáforo
     private Consumer<CriticalSection> onCriticalSectionChanged = status -> {};
     private CriticalSection criticalSection = CriticalSection.IDLE;
 
-    public void setOnCountChanged(Runnable r) {
-        onCountChanged = r == null ? () -> {} : r;
-    }
-
-    public synchronized void setOnCriticalSectionChanged(Consumer<CriticalSection> listener) {
-        onCriticalSectionChanged = listener == null ? status -> {} : listener;
-        onCriticalSectionChanged.accept(criticalSection);
-    }
+    //===================(Métodos)==========================//
 
     public void configure(Model.SimulationConfig config) {
         synchronized (this) {
@@ -55,14 +46,7 @@ public class Recurs {
         onCountChanged.run();
     }
 
-    public void produceOne() throws InterruptedException {
-        produceOne(0);
-    }
-
-    public void consumeOne() throws InterruptedException {
-        consumeOne(0);
-    }
-
+    // Estos 2 se encargan de seleccionar el tipo de recurso y cambiar el estado de producción
     public void produceOne(int resourceType) throws InterruptedException {
         changeStock(true, resourceType);
     }
@@ -71,6 +55,13 @@ public class Recurs {
         changeStock(false, resourceType);
     }
 
+    /** Comprueba si la producción está bloqueada o no. */
+    private boolean isBlocked(boolean producing, int resourceType) {
+        long current = stock.get(resourceType);
+        return producing ? current >= maximumStock : current == 0;
+    }
+
+    /** Método principal pensado para el control de stock con las validaciones importantes */
     private void changeStock(boolean producing, int resourceType) throws InterruptedException {
         if (resourceType < 0 || resourceType >= stock.length()) {
             throw new IllegalArgumentException("El tipo de recurso seleccionado no existe.");
@@ -93,11 +84,11 @@ public class Recurs {
         }
     }
 
-    private boolean isBlocked(boolean producing, int resourceType) {
-        long current = stock.get(resourceType);
-        return producing ? current >= maximumStock : current == 0;
-    }
+    // Métodos para notificar cambios para el semáforo
 
+    /** Método para controlar el semáforo mediante 
+     * enum CriticalSection, también para añadir cambios dentro de la lista stock e incrementar 
+     * el total de producido y consumido */
     private void applyChange(boolean producing, int resourceType) {
         setCriticalSection(producing ? CriticalSection.PRODUCING : CriticalSection.CONSUMING);
         try {
@@ -114,8 +105,19 @@ public class Recurs {
         onCriticalSectionChanged.accept(status);
     }
 
+    public synchronized void setOnCriticalSectionChanged(Consumer<CriticalSection> listener) {
+        onCriticalSectionChanged = listener == null ? status -> {} : listener;
+        onCriticalSectionChanged.accept(criticalSection);
+    }
+
+    // Getters y setters
+
     public long getContador() {
         return getTotalInStock();
+    }
+
+    public void setOnCountChanged(Runnable r) {
+        onCountChanged = r == null ? () -> {} : r;
     }
 
     public void setContador(int contador) {
