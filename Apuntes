@@ -1,0 +1,44 @@
+Primera Tasca:
+Barra deslizadora de confirmación y una pantalla al lado de visualización.
+
+Clases de tipus interface:
+Model
+View
+Presenter
+
+Mas las variantes My en clases normales, el MyView y MyModel son hijos de sus interfaces. Las interfaces componen Presenter, y este tiene un hijo MyPresenter.
+
+Productor y Consumidor son hilos, Recurso no. Componen Model.
+
+Recurso: add() -> Consumidor , remove() -> Productor
+
+---------------------------
+Cosas que añadir:
+
+Chef: parametizar la cantidad de Comidas que produce.
+Comidas:
+Cliente: parametizar la cantidad de Comidas que consume.
+
+Tiempo sleep entre producción y producción.
+
+Sleep time random
+
+Quiero que haya un máximo de comida en la mesa. Y que si no hay comida hacer que espere el consumidor (poner sleep) hasta que haya comida disponible. Tiene que estar controlado por recurso como si fuera una cola.
+
+
+---------------------------
+Parametros:
+
+Nº Productors: [Tipo text input]
+Nº Consumidors: [Tipo text input]
+Nº Tipus de recursos: [Tipo text input]
+Temps produir [min] - [max] (para hacer un random)
+Temps consumir [min] - [max] (para hacer un random)
+Recursos a produir: Ilimitats/[min] - [max] (para hacer un random)
+Recursos a consumir: Ilimitats/[min] - [max] (para hacer un random)
+Control stock recursos: SI/NO
+Tipus control stock: sleep/wait - notify all
+Limit de recursos: [min] - [max] (para hacer un random)
+Sincronització per produir/consumir: SI/NO
+Tipo consumo fijo (escoge un tipo fijo de recurso)/variable (todo random)
+Tipo producción: fijo/variable
