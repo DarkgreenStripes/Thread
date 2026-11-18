@@ -73,10 +73,6 @@ public class Model {
         this.r = new Recurs();
     }
 
-    public Recurs getRecurs() {
-        return r;
-    }
-
     public void play() throws InterruptedException {
         if (config == null) {
             throw new IllegalStateException("La configuración de la simulación no está establecida.");
@@ -177,6 +173,11 @@ public class Model {
         if (interrupted) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    //Setters y getters
+    public Recurs getRecurs() {
+        return r;
     }
 
     public void setConfig(SimulationConfig config) {

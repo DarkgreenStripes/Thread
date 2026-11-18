@@ -88,6 +88,7 @@ public class ViewPanel extends JPanel {
         add(semaphoreStatus);
     }
 
+    // Setters
     public void setComptador(long comptador) {
         counterLabel.setText("Recursos en reserva: " + comptador);
     }

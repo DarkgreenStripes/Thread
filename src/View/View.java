@@ -1,12 +1,9 @@
 package View;
 
+import Helpers.CriticalSection;
+import Model.Model;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import Model.Model;
-import Helpers.CriticalSection;
 import javax.swing.*;
 
 public class View {
@@ -81,6 +78,7 @@ public class View {
         return header;
     }
 
+    //Botones
     public void playBttnListener(ActionListener actionListener) {
         controlPanel.addPlayButtonListener(actionListener);
     }
@@ -97,6 +95,30 @@ public class View {
         controlPanel.resetValues();
     }
 
+    //Estilo de botones
+    static void styleButton(JButton button, Color background, Color foreground) {
+        button.setFont(button.getFont().deriveFont(Font.BOLD, 13f));
+        button.setBackground(background);
+        button.setForeground(foreground);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setBorder(BorderFactory.createEmptyBorder(9, 14, 9, 14));
+    }
+
+    static void styleInput(JTextField field) {
+        field.setFont(field.getFont().deriveFont(14f));
+        field.setForeground(TEXT);
+        field.setBackground(SURFACE);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(BORDER),
+                BorderFactory.createEmptyBorder(7, 9, 7, 9)
+        ));
+        field.setPreferredSize(new Dimension(90, 36));
+    }
+
+    //Getters y setters
     public JFrame getFrame() {
         return frame;
     }
@@ -124,28 +146,6 @@ public class View {
 
     public void setSleepTimeConsumed(int milliseconds) {
         viewPanel.setSleepTimeConsumed(milliseconds);
-    }
-
-    static void styleButton(JButton button, Color background, Color foreground) {
-        button.setFont(button.getFont().deriveFont(Font.BOLD, 13f));
-        button.setBackground(background);
-        button.setForeground(foreground);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setOpaque(true);
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setBorder(BorderFactory.createEmptyBorder(9, 14, 9, 14));
-    }
-
-    static void styleInput(JTextField field) {
-        field.setFont(field.getFont().deriveFont(14f));
-        field.setForeground(TEXT);
-        field.setBackground(SURFACE);
-        field.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER),
-                BorderFactory.createEmptyBorder(7, 9, 7, 9)
-        ));
-        field.setPreferredSize(new Dimension(90, 36));
     }
 
 }
